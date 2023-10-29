@@ -1,5 +1,4 @@
 #include <raylib.h>
-#include <sys/stat.h>
 
 static struct {
     struct {
@@ -16,7 +15,7 @@ static inline void init_game(
     Game.Entities.camera.target = (Vector2) {
         .x = width / 2, .y = height / 2
     };
-    Game.Entities.camera.offset = (Vector2){
+    Game.Entities.camera.offset = (Vector2) {
         width/2, height / 2
     };
     Game.Entities.camera.rotation = 0.0f;
