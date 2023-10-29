@@ -8,7 +8,7 @@ ARGUMENTS = -Wall
 ARGUMENTS += -Wextra
 ARGUMENTS += -Wpedantic
 ARGUMENTS += --std=c2x
-ARGUMENTS += -03
+ARGUMENTS += -o3
 
 SRC = $(shell find src -name "*.c")
 
