@@ -31,13 +31,29 @@ void update_player(Player *player, float deltatime) {
     move(player, deltatime);
 }
 
-void draw_player(Player *player, int frame_count) {
-    play_animation(
-        player->pos,
-        player->texture,
-        5,
-        2
-    );
+void draw_player(Player *player) {
+    if (player->dir.x == 1) {
+        play_animation(
+            player->pos,
+            player->texture,
+            4,
+            1
+        );
+    } else if (player->dir.x == -1) {
+        play_animation(
+            player->pos,
+            player->texture,
+            4,
+            2
+        );
+    } else {
+        play_animation(
+            player->pos,
+            player->texture,
+            1,
+            1
+        );
+    }    
 }
 
 void destroy_player(Player *player) {

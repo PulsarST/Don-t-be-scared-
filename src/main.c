@@ -1,8 +1,11 @@
 #include <raylib.h>
 
+#include "player.h"
+
 static struct {
     struct {
         Camera2D camera;
+        Player *player;
     } Entities;
 } Game;
 
@@ -21,11 +24,19 @@ static inline void init_game(
     };
     Game.Entities.camera.rotation = 0.0f;
     Game.Entities.camera.zoom = 1.0f;
+
+    Game.Entities.player = create_player(
+        width / 2,
+        height / 2,
+        1000,
+        "..\\res\\Player.png"
+    );
 }
 
 static inline void draw() {
     BeginDrawing();
     ClearBackground(BLACK);
+    draw_player(Game.Entities.player);
     EndDrawing();
 }
 

@@ -19,5 +19,5 @@ Player *create_player(
 
 static void move(Player *player, float deltatime);
 void update_player(Player *player, float deltatime);
-void draw_player(Player *player, int frame_count);
+void draw_player(Player *player);
 void destroy_player(Player *player);
