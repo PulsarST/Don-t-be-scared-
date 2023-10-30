@@ -11,6 +11,7 @@ static inline void init_game(
     float width, float height, const char *title
 ) {
     InitWindow(width, height, title);
+    SetTargetFPS(60);
     Game.Entities.camera = (Camera2D) { 0 };
     Game.Entities.camera.target = (Vector2) {
         .x = width / 2, .y = height / 2
@@ -24,7 +25,7 @@ static inline void init_game(
 
 static inline void draw() {
     BeginDrawing();
-    ClearBackground(SKYBLUE);
+    ClearBackground(BLACK);
     EndDrawing();
 }
 
