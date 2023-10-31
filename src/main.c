@@ -15,6 +15,9 @@ static inline void init_game(
 ) {
     InitWindow(width, height, title);
     SetTargetFPS(60);
+    SetConfigFlags(FLAG_VSYNC_HINT);
+    ChangeDirectory(GetApplicationDirectory());
+
     Game.Entities.camera = (Camera2D) { 0 };
     Game.Entities.camera.target = (Vector2) {
         .x = width / 2, .y = height / 2

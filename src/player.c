@@ -1,4 +1,5 @@
 #include "player.h"
+#include <stdbool.h>
 
 Player *create_player(
     float x,float y, float speed, const char* filename
@@ -7,7 +8,14 @@ Player *create_player(
     player->pos = (Vector2) {x, y}; 
     player->dir = (Vector2) {0.0f, 0.0f};
     player->speed = speed;
-    player->texture = LoadTexture(filename);
+    Image image = LoadImage(filename);
+    ImageResize(
+        &image,
+        image.width * 4,
+        image.height * 4
+    );
+    player->texture = LoadTextureFromImage(image);
+    UnloadImage(image);
     player->collider = (AABB) {
         x,y,
         player->texture.width,
@@ -34,26 +42,32 @@ void update_player(Player *player, float deltatime) {
 void draw_player(Player *player) {
     if (player->dir.x == 1) {
         play_animation(
-            player->pos,
             player->texture,
+            player->pos,
+            false,
+            1,
             4,
-            1
+            2
         );
     } else if (player->dir.x == -1) {
         play_animation(
-            player->pos,
             player->texture,
+            player->pos,
+            false,
+            1,
             4,
             2
         );
     } else {
         play_animation(
-            player->pos,
             player->texture,
+            player->pos,
+            false,
             1,
-            1
+            4,
+            2
         );
-    }    
+    }
 }
 
 void destroy_player(Player *player) {

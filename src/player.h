@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <memory.h>
+#include <stdbool.h>
 #include <raylib.h>
 
 #include "AABB.h"

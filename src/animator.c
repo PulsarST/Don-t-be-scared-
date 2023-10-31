@@ -5,30 +5,34 @@
 #include "animator.h"
 
 void play_animation(
-    Vector2 pos,
     Texture texture,
-    float horisontal_count_frames,
-    float vertical_count_frames
+    Vector2 pos,
+    bool play_anim,
+    int number_of_anim,
+    float collumns,
+    float rows
 ) {
-    int current_frame, frame_counter, frame_speed = 8;
+    static int
+        frameX = 0,
+        frameY = 0,
+        frame_counter,
+        frame_speed = 20;
+
     Rectangle frame_rect = (Rectangle) {
-        0.0f,
-        0.0f,
-        texture.width / horisontal_count_frames,
-        texture.height / vertical_count_frames
+        frameX * (texture.width/collumns),
+        frameY * (texture.height/rows),
+        texture.width/collumns,
+        texture.height/rows
     };
 
-    frame_counter++;
-    if (frame_counter >= (60/frame_speed)) {
+    if (play_anim) frame_counter++;
+    if (frame_counter >= 60.0f/frame_speed) {
         frame_counter = 0;
-        current_frame++;
-        if (current_frame > horisontal_count_frames)
-            current_frame = 0;
-        frame_rect.x = 
-            (float) current_frame * 
-            texture.width/horisontal_count_frames;
-        frame_rect.y = current_frame *
-            texture.height/vertical_count_frames; 
+        frameX++; frameY = number_of_anim;
+        if (frameX > collumns) frameX = 0;
+        if (frameY > rows) frameY = 0;
+        frame_rect.x = frameX * (texture.width/collumns);
+        frame_rect.y = frameY * (texture.height/rows);
     }
 
     DrawTextureRec(
