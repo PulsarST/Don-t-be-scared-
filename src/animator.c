@@ -16,7 +16,7 @@ void play_animation(
         frameX = 0,
         frameY = 0,
         frame_counter,
-        frame_speed = 20;
+        frame_speed = 17;
 
     Rectangle frame_rect = (Rectangle) {
         frameX * (texture.width/collumns),
