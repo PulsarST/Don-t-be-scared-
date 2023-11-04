@@ -7,13 +7,13 @@
 
 #define ASSERT(_v, message) if (!(_v))          \
     printf(                                     \
-        "\e[0;31m[%s]: %s\e[0;37m\n",         \
+        "\e[0;31m[%s]: %s\e[0;37m\n",           \
         __FILE__,                               \
         message                                 \
-    );                                          \
+    )
 
 #define INFO(message)                       \
-    printf("\e[0;34m[%s]: %s\e[0;37m\n",  \
+    printf("\e[0;34m[%s]: %s\e[0;37m\n",    \
     __FILE__, message)                      \
 
 #endif

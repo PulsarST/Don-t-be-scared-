@@ -1,4 +1,6 @@
 #include "player.h"
+#include <stdbool.h>
+#include <stdio.h>
 
 Player *create_player(
     float x,
@@ -7,86 +9,59 @@ Player *create_player(
     const char* filename
 ) {
     Player *player = malloc(sizeof(Player));
-    ASSERT(player != NULL, "player isn't loaded")
+    ASSERT(player != NULL, "player isn't loaded");
     player->pos = (Vector2) {x, y}; 
-    player->dir = (Vector2) {0.0f, 0.0f};
+    player->dir = Vector2Zero();
     player->speed = speed;
-    player->texture = LoadTexture(filename);
+    player->sprite = create_sprite(
+        LoadTexture(filename),
+        &player->pos,
+        4, 8);
     player->collider = (AABB) {
         x,y,
-        player->texture.width,
-        player->texture.height
+        x + player->sprite.rect.width,
+        y + player->sprite.rect.height
     };
-
-    player->lantern = create_lantern(
-        "..\\res\\lantern.png",
-        player->pos.x + (player->texture.width / 8.0f),
-        player->pos.y + (player->texture.height / 8.0f),
-        1.5f
-    );
 
     return player;
 }
 
 void move(Player *player, const float deltatime) {
+    Vector2Normalize(player->dir);
     player->pos.x +=
         player->dir.x * player->speed * deltatime;
-
     player->pos.y +=
         player->dir.y * player->speed * deltatime;
-}
-
-void key_handler(Player *player) {
-    if (IsKeyDown(KEY_W)) player->dir.y = -1;
-    else if (IsKeyDown(KEY_S)) player->dir.y = 1;
-    else player->dir.y = 0;
-
-    if (IsKeyDown(KEY_A)) player->dir.x = -1;
-    else if (IsKeyDown(KEY_D)) player->dir.x = 1;
-    else player->dir.x = 0;
-
-    if (IsKeyDown(KEY_P)) {
-        switch_light(player->lantern);
-    }
 }
 
 void update_player(
     Player *player, const float deltatime
 ) {
-    key_handler(player);
     move(player, deltatime);
 }
 
 void draw_player(Player *player) {
-    static bool is_left = false;
-    if (player->dir.y != 0 || player->dir.x != 0) {
-    is_left = player->dir.x < 0;
-        play_animation(
-            player->texture,
-            player->pos,
-            true,
-            is_left,
-            4,
-            2
-        );
-    } else {
-        DrawTextureRec(
-            player->texture,
-            (Rectangle) {
-                is_left * (player->texture.width / 4.0f),
-                is_left * (player->texture.height / 2.0f),
-                player->texture.width/4.0f,
-                player->texture.height/2.0f},
-            player->pos,
-            WHITE
-        );
-    }
-
-    draw_lantern(player->lantern);
+    int anim_row = 0;
+    static int tmp_anim_row = 1;
+    if (player->dir.x > 0) {
+        anim_row = 0;
+        tmp_anim_row = 1;
+    } else if (player->dir.x < 0) {
+        anim_row = 2;
+        tmp_anim_row = 3;
+    } else if (player->dir.y > 0) {
+        anim_row = 4;
+        tmp_anim_row = 5;
+    } else if (player->dir.y < 0) {
+        anim_row = 6;
+        tmp_anim_row = 7;
+    } else anim_row = tmp_anim_row;
+    play_animation_pro(
+        player->sprite,
+        anim_row);
 }
 
 void destroy_player(Player *player) {
-    destroy_lantern(player->lantern);
-    UnloadTexture(player->texture);
+    UnloadTexture(player->sprite.texture);
     free(player);
 }

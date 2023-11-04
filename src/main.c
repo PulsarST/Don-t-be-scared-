@@ -1,7 +1,7 @@
 #include <raylib.h>
 
-#include "LOG.h"
 #include "player.h"
+#include "LOG.h"
 
 static struct {
     float deltatime;
@@ -49,17 +49,38 @@ static inline void draw() {
     EndDrawing();
 }
 
+void key_handler() {
+    if (IsKeyDown(KEY_W))
+        Game.Entities.player->dir.y = -1;
+    else if (IsKeyDown(KEY_S))
+        Game.Entities.player->dir.y = 1;
+    else Game.Entities.player->dir.y = 0;
+
+    if (IsKeyDown(KEY_A))
+        Game.Entities.player->dir.x = -1;
+    else if (IsKeyDown(KEY_D))
+        Game.Entities.player->dir.x = 1;
+    else Game.Entities.player->dir.x = 0;
+}
+
+static inline void update_camera_pos() {
+    Game.Entities.camera.target.x = 
+        Game.Entities.player->pos.x
+        + Game.Entities.player->sprite.rect.width / 2;
+    
+    Game.Entities.camera.target.y = 
+        Game.Entities.player->pos.y
+        + Game.Entities.player->sprite.rect.height / 2;
+}
+
 static inline void update() {
     Game.deltatime = GetFrameTime();
     update_player(
-        Game.Entities.player, Game.deltatime
+        Game.Entities.player,
+        Game.deltatime
     );
-    Game.Entities.camera.target.x = 
-        Game.Entities.player->pos.x + 24;
-    
-    Game.Entities.camera.target.y = 
-        Game.Entities.player->pos.y + 24;
-    
+    update_camera_pos();
+    key_handler();
 }
 
 static void run_game() {
