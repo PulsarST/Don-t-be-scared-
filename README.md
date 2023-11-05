@@ -1,16 +1,29 @@
-# Find a light !
----
-## what's it ?
-it's topdown shooter where your weapon is lantern and you use it againts monsters !
+# Don't be scared !
 
 ---
-### ToDo:
+## Theme: light switch
+
+---
+## what it's about ?
+You in ruin building with monster
+Your point is collect 3 items and turn on generator
+In time you need to avoid the monster or it kill you
+When the generator is turned on, run to the exit
+
+---
+## Controls
+1. WASD moving
+2. E    collect item
+
+---
+## ToDo:
 - [x] create a player
 - [x] add struct to the animation.c
-- [ ] make a labirint
+- [x] make a level
 - [ ] make a switch light system
-- [ ] add 1 color to all entities
-- [ ] draw a monsters
-- [ ] add logic to the monsters
----
-## Theme: light switch
+- [ ] add general color to all entities
+- [x] draw a monsters
+- [x] add logic to the monsters
+- [x] make items
+- [x] make backpack
+- [ ] make kenematic/static object

@@ -1,8 +1,20 @@
-#pragma once
 #ifndef AABB_C
 #define AABB_C
 
 #include "AABB.h"
+
+void update_aabb(
+    AABB *aabb,
+    float x,
+    float y,
+    float width,
+    float height
+) {
+    aabb->min_x = x;
+    aabb->min_y = y;
+    aabb->max_x = x + width;
+    aabb->max_y = y + height;
+}
 
 bool collide_aabb(AABB a, AABB b) {
     return

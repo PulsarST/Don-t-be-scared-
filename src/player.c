@@ -1,6 +1,4 @@
 #include "player.h"
-#include <stdbool.h>
-#include <stdio.h>
 
 Player *create_player(
     float x,
@@ -16,28 +14,37 @@ Player *create_player(
     player->sprite = create_sprite(
         LoadTexture(filename),
         &player->pos,
-        4, 8);
+        4, 8, 7.0f);
     player->collider = (AABB) {
         x,y,
-        x + player->sprite.rect.width,
-        y + player->sprite.rect.height
+        x + player->sprite->rect.width,
+        y + player->sprite->rect.height
     };
 
     return player;
 }
 
 void move(Player *player, const float deltatime) {
-    Vector2Normalize(player->dir);
+    Vector2 normalized_vector =
+        Vector2Normalize(player->dir);
     player->pos.x +=
-        player->dir.x * player->speed * deltatime;
+        normalized_vector.x * player->speed * deltatime;
     player->pos.y +=
-        player->dir.y * player->speed * deltatime;
+        normalized_vector.y * player->speed * deltatime;
 }
 
 void update_player(
     Player *player, const float deltatime
 ) {
     move(player, deltatime);
+    update_aabb(
+        &player->collider,
+        player->pos.x,
+        player->pos.y,
+        (float) player->sprite->texture.width
+        / player->sprite->collumns,
+        (float) player->sprite->texture.height
+        / player->sprite->rows);
 }
 
 void draw_player(Player *player) {
@@ -61,7 +68,15 @@ void draw_player(Player *player) {
         anim_row);
 }
 
+void add_item(Player *player, Item *item) {
+    for (int i = 0; i < MAX_ITEMS; i++) {
+        if (player->items[i] == NULL) {
+            player->items[i] = item;
+        }
+    }
+}
+
 void destroy_player(Player *player) {
-    UnloadTexture(player->sprite.texture);
+    destroy_sprite(player->sprite);
     free(player);
 }

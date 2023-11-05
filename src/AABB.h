@@ -1,4 +1,3 @@
-#pragma once
 #ifndef AABB_H
 #define AABB_H
 
@@ -10,6 +9,12 @@ typedef struct {
     int max_x, max_y;
 } AABB;
 
+void update_aabb(
+    AABB *aabb,
+    float x,
+    float y,
+    float width,
+    float height);
 bool collide_aabb(AABB a, AABB b);
 bool collide_point(AABB a, int point_x, int point_y);
 bool collide_point_v(AABB a, Vector2 point);
