@@ -17,6 +17,7 @@ typedef struct {
     float speed;
     Animation_sprite *sprite;
     AABB collider;
+    Circle_aabb affect_radius;
 
     Item *items[MAX_ITEMS];
 } Player;
@@ -25,7 +26,7 @@ Player *create_player(
     float x,float y, float speed, const char* filename
 );
 
-static void move(Player *player, const float deltatime);
+static void move_player(Player *player, const float deltatime);
 void update_player(Player *player, const float deltatime);
 void draw_player(Player *player);
 void add_item(Player *player, Item *item);

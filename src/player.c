@@ -15,16 +15,13 @@ Player *create_player(
         LoadTexture(filename),
         &player->pos,
         4, 8, 7.0f);
-    player->collider = (AABB) {
-        x,y,
-        x + player->sprite->rect.width,
-        y + player->sprite->rect.height
-    };
+    player->collider = (AABB) { 0 };
+    player->affect_radius = (Circle_aabb) { 0 };
 
     return player;
 }
 
-void move(Player *player, const float deltatime) {
+void move_player(Player *player, const float deltatime) {
     Vector2 normalized_vector =
         Vector2Normalize(player->dir);
     player->pos.x +=
@@ -36,18 +33,29 @@ void move(Player *player, const float deltatime) {
 void update_player(
     Player *player, const float deltatime
 ) {
-    move(player, deltatime);
+    move_player(player, deltatime);
     update_aabb(
         &player->collider,
         player->pos.x,
         player->pos.y,
         (float) player->sprite->texture.width
-        / player->sprite->collumns,
+        / player->sprite->collumns / 2,
         (float) player->sprite->texture.height
-        / player->sprite->rows);
+        / player->sprite->rows / 2);
+
+    update_circle_aabb(
+        &player->affect_radius,
+        player->pos.x
+        + (float) player->sprite->texture.width
+        / player->sprite->collumns / 2,
+        player->pos.y
+        + (float) player->sprite->texture.height
+        / player->sprite->rows / 2,
+        200);
 }
 
 void draw_player(Player *player) {
+    draw_circle_aabb(player->affect_radius);
     int anim_row = 0;
     static int tmp_anim_row = 1;
     if (player->dir.x > 0) {
@@ -56,16 +64,10 @@ void draw_player(Player *player) {
     } else if (player->dir.x < 0) {
         anim_row = 2;
         tmp_anim_row = 3;
-    } else if (player->dir.y > 0) {
-        anim_row = 4;
-        tmp_anim_row = 5;
-    } else if (player->dir.y < 0) {
-        anim_row = 6;
-        tmp_anim_row = 7;
     } else anim_row = tmp_anim_row;
     play_animation_pro(
         player->sprite,
-        anim_row);
+        anim_row);    
 }
 
 void add_item(Player *player, Item *item) {

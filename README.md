@@ -1,5 +1,7 @@
 # Don't be scared !
 
+sorry for bad code
+
 ---
 ## Theme: light switch
 
@@ -24,6 +26,10 @@ When the generator is turned on, run to the exit
 - [ ] add general color to all entities
 - [x] draw a monsters
 - [x] add logic to the monsters
+- [ ] add affect raius for monster and player
 - [x] make items
 - [x] make backpack
 - [ ] make kenematic/static object
+
+---
+## Library: raylib by @raysan5

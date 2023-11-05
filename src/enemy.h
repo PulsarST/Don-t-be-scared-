@@ -13,6 +13,7 @@ typedef struct {
     float speed;
     Animation_sprite *sprite;
     AABB collider;
+    Circle_aabb affect_radius;
 } Enemy;
 
 Enemy *create_enemy(

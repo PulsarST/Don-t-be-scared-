@@ -20,6 +20,7 @@ Enemy *create_enemy(
     enemy->dir = Vector2Zero();
     enemy->speed = speed;
     enemy->collider = (AABB) { 0 };
+    enemy->affect_radius = (Circle_aabb) { 0 };
 
     return enemy;
 }
@@ -42,6 +43,7 @@ void draw_enemy(Enemy *enemy) {
     } else anim_row = tmp_anim_row;
     play_animation_pro(
         enemy->sprite, anim_row);
+    draw_circle_aabb(enemy->affect_radius);
 }
 
 void move_enemy(Enemy *enemy, const float deltatime) {
@@ -57,9 +59,19 @@ void move_enemy(Enemy *enemy, const float deltatime) {
         enemy->pos.x,
         enemy->pos.y,
         (float) enemy->sprite->texture.width
-        / enemy->sprite->collumns,
+        / enemy->sprite->collumns / 2,
         (float) enemy->sprite->texture.height
-        / enemy->sprite->rows);
+        / enemy->sprite->rows / 2);
+
+    update_circle_aabb(
+        &enemy->affect_radius,
+        enemy->pos.x
+        + (float) enemy->sprite->texture.width
+        / enemy->sprite->collumns / 2,
+        enemy->pos.y
+        + (float) enemy->sprite->texture.height
+        / enemy->sprite->rows / 2,
+        350);
 }
 
 void follow_to(Enemy *enemy, Vector2 follow_pos) {

@@ -73,6 +73,18 @@ static inline void colliding() {
             20,
             RAYWHITE);
     }
+
+    if (collide_circle_aabb(
+        Game.Entities.player->collider,
+        Game.Entities.claws->affect_radius)
+    ) {
+        follow_to(
+            Game.Entities.claws,
+            Game.Entities.player->pos);
+    } else {
+        Game.Entities.claws->dir.x = 0;
+        Game.Entities.claws->dir.y = 0;
+    }
 }
 
 static inline void draw() {
@@ -81,9 +93,9 @@ static inline void draw() {
 
         ClearBackground(BLACK);
         draw_level(Game.levels);
+        draw_object(Game.Entities.generator);
         draw_player(Game.Entities.player);
         draw_enemy(Game.Entities.claws);
-        draw_object(Game.Entities.generator);
         
     EndMode2D();
     colliding();
@@ -124,9 +136,6 @@ static inline void update() {
     move_enemy(
         Game.Entities.claws,
         Game.deltatime);
-    follow_to(
-        Game.Entities.claws,
-        Game.Entities.player->pos);
     update_camera_pos();
     key_handler();
 }
